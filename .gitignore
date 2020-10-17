@@ -1,0 +1,13 @@
+# Log file
+*.log
+*.idea
+*.iml
+
+# BlueJ files
+*.ctxt
+
+# DS_Store
+**/*DS_Store*
+# Log files
+**/*.log
+**/*.log.zip

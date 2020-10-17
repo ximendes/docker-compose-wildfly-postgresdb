@@ -1,0 +1,47 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:10-alpine
+    volumes:
+      - ./database/init-database.sh:/docker-entrypoint-initdb.d/init-create-db.sh
+      - ./database/backups:/tmp/backup
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - wildfly
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres:5432/my_db -user=docker -password=docker -baselineOnMigrate=true -connectRetries=60 migrate
+    volumes:
+      - ./flyway:/flyway/sql
+    depends_on:
+      - postgres
+    networks:
+      - wildfly
+  wildfly:
+    build:
+      context: wildfly/
+    networks:
+      - wildfly
+    ports:
+      - "8080:8080"
+      - "8787:8787"
+      - "9990:9990"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=my_db
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DATASOURCE_NAME=PostgresDS
+      - DATASOURCE_JNDI=localhost-ds
+    depends_on:
+      - postgres
+networks:
+  wildfly:
+volumes:
+  db-data:
