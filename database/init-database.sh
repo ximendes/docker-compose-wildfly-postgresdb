@@ -12,5 +12,5 @@ echo "Restoring backup..."
 pg_restore --username=postgres --dbname=my_db --jobs=4 --no-privileges /tmp/backup/dump-my_db.backup
 
 echo "Executing initial script"
-psql -v ON_ERROR_STOP=1 --username=postgres --dbname=my_db --file=/tmp/backup/script-inicial.sql
+psql -v ON_ERROR_STOP=1 --username=postgres --dbname=my_db --file=/tmp/backup/initial-script.sql
 

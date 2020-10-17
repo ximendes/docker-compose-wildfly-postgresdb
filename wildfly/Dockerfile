@@ -12,17 +12,17 @@ ENV DB_HOST postgres
 ENV DB_PORT 5432
 ENV DB_USER docker
 ENV DB_PASS docker
-ENV DB_NAME hero
+ENV DB_NAME my_db
 
-COPY startWildfly.sh $JBOSS_HOME/bin
+COPY start-wildfly.sh $JBOSS_HOME/bin
 COPY postgresql-42.2.8.jar /tmp
 
 
 USER root
 RUN chown -R jboss:0 ${JBOSS_HOME} \
     && chmod -R g+rw ${JBOSS_HOME} \
-    && chmod 755 $JBOSS_HOME/bin/startWildfly.sh \
-    && chown jboss:jboss $JBOSS_HOME/bin/startWildfly.sh
+    && chmod 755 $JBOSS_HOME/bin/start-wildfly.sh \
+    && chown jboss:jboss $JBOSS_HOME/bin/start-wildfly.sh
 USER jboss
 
-ENTRYPOINT $JBOSS_HOME/bin/startWildfly.sh
+ENTRYPOINT $JBOSS_HOME/bin/start-wildfly.sh
